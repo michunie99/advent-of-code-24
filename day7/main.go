@@ -20,14 +20,16 @@ func validLine(target int, numbers []int) bool {
 	max_mask := int(math.Pow(float64(2), float64(len(numbers))))
 	for {
 		sum := 0
+		div := 1
 		for i := range len(numbers) {
-			div := int(math.Pow(float64(2), float64(i)))
+			// div := int(math.Pow(float64(2), float64(i)))
 			switch (mask / div) % 2 {
 			case 0:
 				sum += numbers[i]
 			case 1:
 				sum *= numbers[i]
 			}
+			div *= 2
 		}
 		if sum == target {
 			return true
@@ -55,8 +57,9 @@ func validLineCorrected(target int, numbers []int) bool {
 	max_mask := int(math.Pow(float64(3), float64(len(numbers))))
 	for {
 		sum := 0
+		div := 1
 		for i := range len(numbers) {
-			div := int(math.Pow(float64(3), float64(i)))
+			// div := int(math.Pow(float64(3), float64(i)))
 			switch (mask / div) % 3 {
 			case 0:
 				sum += numbers[i]
@@ -67,6 +70,7 @@ func validLineCorrected(target int, numbers []int) bool {
 				sum *= int(math.Pow(float64(10), float64(digits)))
 				sum += numbers[i]
 			}
+			div *= 3
 		}
 		if sum == target {
 			return true
