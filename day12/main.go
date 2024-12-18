@@ -44,6 +44,37 @@ func findPerimiter(filed [][]byte, pos [2]int, rows, cols int, visited map[[2]in
 		}
 	}
 
+	// Find cornest
+	for _, v := range [][][2]int{
+		{{0, 1}, {-1, 0}, {-1, 1}},
+		{{-1, 0}, {0, -1}, {-1, -1}},
+		{{0, -1}, {1, 0}, {1, -1}},
+		{{1, 0}, {0, 1}, {1, 1}},
+	} {
+		vec := make([]int, 3)
+		for i := range 3 {
+			posOffset := [2]int{pos[0] + v[i][0], pos[1] + v[i][1]}
+			if posOffset[0] >= 0 && posOffset[0] < rows && posOffset[1] >= 0 && posOffset[1] < cols {
+				neighbour := filed[posOffset[0]][posOffset[1]]
+				if neighbour != region {
+					vec[i] = -1
+				} else {
+					vec[i] = 1
+				}
+			} else {
+				vec[i] = -1
+			}
+		}
+		// fmt.Println(vec, same, pos)
+		sum := vec[0] + vec[1] + vec[2] + 1 // NOTE: this is ugly !!!
+		if (vec[2] == -1 && sum != 0) ||
+			(vec[2] == 1 && sum == 0) {
+			corners++
+			// fmt.Println("Corner: ", pos)
+		}
+
+	}
+
 	return area, perimiters, corners
 }
 
@@ -71,7 +102,7 @@ func main() {
 				area, primiter, corners := findPerimiter(field, pos, rows, cols, visited)
 				res1 += area * primiter
 				res2 += area * corners
-				// fmt.Printf("%c, %d, %d\n", field[pos[0]][pos[1]], area, primiter)
+				fmt.Printf("%c, %d, %d\n", field[pos[0]][pos[1]], area, corners)
 			}
 		}
 	}
